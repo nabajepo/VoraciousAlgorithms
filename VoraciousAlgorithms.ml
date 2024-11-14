@@ -16,11 +16,10 @@ and edge = {
     vertexOne: vertex option ref;
     vertexTwo: vertex option ref;
 }
-
 (*----------step2------------*)
 (*duplicate_vertex*)
 (*----------step3------------*)
-(*isEnoughVertex*)
-(*isEnoughEdge*)
+(*isEnoughVertex*)(*we must have at least two vertex*)
+(*isEnoughEdge*)(*we must have at least n-1 edges*)
 (*----------step4------------*)
 (*-----------------------------------------END-------------------------------------------*)
