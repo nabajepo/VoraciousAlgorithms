@@ -98,7 +98,8 @@ let rec isEdgeExist index edge listEdg =(*here we send if a edge which relate tw
                 &&(String.equal edge.vertexTwo.name  edgeG.vertexOne.name)) )  then 1
             else 
                 isEdgeExist (index+1) edge listEdg
-(*getEdgeList*)(*here we get a edge and we make vertex from the edge given*)             
+(*getEdgeList*)
+(*here we get a edge and we make vertex from the edge given*)             
 
 (*connect_graph*)
 (*----------step4-----------*)(*we make vorociousAlgorithmes*)
