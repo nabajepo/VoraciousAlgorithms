@@ -5,7 +5,7 @@
 (*-----------------------------------------PROGRAM-------------------------------------------*)
 (*----------step1------------*)
 (*this type is for vertex*)
-exception Error of string;
+exception Error of string;;
 type vertex = {
     name: string;
     adjacentVertex:vertex list;
@@ -32,16 +32,16 @@ let rec duplicate_vertex lst eltIndex index =(*here we return 0 if there is not 
         let element=List.nth lst eltIndex in
         let elementCompare=List.nth lst index in
         if ((element<>elementCompare) &&
-            (eltIndex<>index)) then duplicate_vertex lst eltIndex (index+1) 0
+            (eltIndex<>index)) then duplicate_vertex lst eltIndex (index+1) 
         else
             1
 let rec duplicate_vertices lst index=(*check if a list has duplicate vertices *)
     if(index=List.length lst) then 0
     else
-        let resp=duplicate_vertex lst index 0 0 in
-        if(resp=0) then duplicate_vertices lst (index+1) resp 
+        let resp=duplicate_vertex lst index 0  in
+        if(resp=0) then duplicate_vertices lst (index+1) 
         else
-            1        
+            1   ;;     
 
 (*----------step3------------*)(*Here we check if a graph is connected *)
 let rec length_value message isVertex lengthV=(*to get vertex and edges length*)
@@ -80,24 +80,25 @@ let rec getVerticesList indexL length listVertex=(*here we get vertex from user 
         with
         |Failure msgError->Printf.printf "Error: %s\n" msgError;getVerticesList indexL length listVertex
 
-let rec isVertexExist index vertexG listVertex =(*here we check if a somme given is in the list*)
+let rec isVertexExist index vertexG listVertex =(*here we check if a vertex given is in the list*)
     if index=List.length listVertex then 0
     else
         let vertexE=List.nth listVertex index in
-        if String.equal vertexE vertexG then 1
+        if String.equal vertexE.name vertexG.name then 1
         else
             isVertexExist (index+1) vertexG listVertex;;
 
 let rec isEdgeExist index edge listEdg =(*here we send if a edge which relate two vertices already Exist*)
-        if index=List.length listEdg then 0
+        if index=List.length listEdg then 0(*Doesn't exist*)
         else
-            let edgeG=List.nth listEdg index in
-            if (((String.equal edge.vertexOne.name  edgeG.vertexOne.name) 
-                &&(String.equal edge.vertexTwo.name  edgeG.vertexTwo.name)) 
-                || ((String.equal edge.vertexOne.name  edgeG.vertexTwo.name) 
-                &&(String.equal edge.vertexTwo.name  edgeG.vertexOne.name)) )  then 1
-            else 
-                isEdgeExist (index+1) edge listEdg
+            let edgeG=List.nth listEdg index in 
+            match !(edge.vertexOne), !(edgeG.vertexOne), !(edge.vertexTwo), !(edgeG.vertexTwo) with
+            | Some v1, Some vg1, Some v2, Some vg2 ->
+                   if ((String.equal v1.name vg1.name && String.equal v2.name vg2.name) ||
+                       (String.equal v1.name vg2.name && String.equal v2.name vg1.name)) then 1(*Exist *)
+                   else
+                    isEdgeExist (index+1) edge listEdg
+            | _ -> -1(*when it is an Error*)                
 (*getEdgeList*)
 (*here we get a edge and we make vertex from the edge given*)             
 
