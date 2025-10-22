@@ -65,7 +65,7 @@ let rec length_value message isVertex lengthV=(*to get vertex and edges length*)
         Printf.printf "Enter a valid number.\n";
         length_value message isVertex lengthV
 
-
+(*-----------------------------------------------------VERTEX---------------------------------------------------------*)
 let rec getVerticesList indexL length listVertex=(*here we get vertex from user *)
     if(indexL=length)  then listVertex
     else
@@ -78,15 +78,32 @@ let rec getVerticesList indexL length listVertex=(*here we get vertex from user 
            else
             getVerticesList (indexL+1) length (listVertex@[vertexG])
         with
-        |Failure msgError->Printf.printf "Error: %s\n" msgError;getVerticesList indexL length listVertex
+        |Failure msgError->Printf.printf "Error: %s\n" msgError;getVerticesList indexL length listVertex;;
 
 let rec isVertexExist index vertexG listVertex =(*here we check if a vertex given is in the list*)
     if index=List.length listVertex then 0
     else
         let vertexE=List.nth listVertex index in
-        if String.equal vertexE.name vertexG.name then 1
+        if String.equal vertexE vertexG then 1
         else
             isVertexExist (index+1) vertexG listVertex;;
+
+(*-----------------------------------------------------VERTEX---------------------------------------------------------*)
+(*-------------------------------------------------------EDGE---------------------------------------------------------*)
+let rec getEdgeForVertex index nameEdge listVertex res =(*here we get vertices for a specific edge*)
+    if index=3 then res
+    else
+       let temp=index in 
+       Printf.printf "Please give %d vertex for edge %s : "temp nameEdge;
+       flush stdout;
+       try
+        let vertexName=input_line stdin in
+        let rep=isVertexExist 0 vertexName listVertex in
+        if rep<>0 then raise(Failure "The vertex given is not in the list")
+        else
+            getEdgeForVertex (index+1) nameEdge listVertex res@[vertexName]
+       with
+       |Failure msgError->Printf.printf "Error: %s\n" msgError;getEdgeForVertex index nameEdge listVertex res;;   
 
 let rec isEdgeExist index edge listEdg =(*here we send if a edge which relate two vertices already Exist*)
         if index=List.length listEdg then 0(*Doesn't exist*)
@@ -98,10 +115,9 @@ let rec isEdgeExist index edge listEdg =(*here we send if a edge which relate tw
                        (String.equal v1.name vg2.name && String.equal v2.name vg1.name)) then 1(*Exist *)
                    else
                     isEdgeExist (index+1) edge listEdg
-            | _ -> -1(*when it is an Error*)                
-(*getEdgeList*)
-(*here we get a edge and we make vertex from the edge given*)             
+            | _ -> -1(*when it is an Error*)      
 
+(*-------------------------------------------------------EDGE---------------------------------------------------------*)
 (*connect_graph*)
 (*----------step4-----------*)(*we make vorociousAlgorithmes*)
 (*kruskal*)
